@@ -1,0 +1,42 @@
+[
+  {
+    "id": 2,
+    "idtitulo": "TRPV",
+    "titulo": "TÍTULO DE PARTICIPACIÓN RENTA VARIABLE",
+    "clasificacion": "DIV",
+    "valor": 256000000,
+    "fecha_creacion": "2022-08-25",
+    "fecha_vencimiento": "2023-08-26",
+    "pagocuota": "N"
+  },
+  {
+    "id": 3,
+    "idtitulo": "TP",
+    "titulo": "TÍTULO DE PARTICIPACIÓN",
+    "clasificacion": "DIV",
+    "valor": 360000000,
+    "fecha_creacion": "2022-02-16",
+    "fecha_vencimiento": "2023-02-17",
+    "pagocuota": "N"
+  },
+  {
+    "id": 1,
+    "idtitulo": "USD",
+    "titulo": "DOLAR",
+    "clasificacion": "DIV",
+    "valor": 499988000,
+    "fecha_creacion": "2022-03-14",
+    "fecha_vencimiento": "2023-03-15",
+    "pagocuota": "N"
+  },
+  {
+    "id": 4,
+    "idtitulo": "USD",
+    "titulo": "DOLAR",
+    "clasificacion": "Text clasification",
+    "valor": 1,
+    "fecha_creacion": "2023-01-02",
+    "fecha_vencimiento": "2023-02-01",
+    "pagocuota": "Y"
+  }
+]

@@ -36,7 +36,7 @@ export class Title {
 
   @IsNotEmpty()
   @IsDateString()
-  readonly fecha_creacion: string;
+  fecha_creacion: string;
 
   @IsNotEmpty()
   @IsDateString()

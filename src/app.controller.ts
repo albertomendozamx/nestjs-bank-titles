@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -8,7 +9,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { AppService } from './app.service';
-import { MoveDto, TitleDto, TitleUpdateDto } from './dtos/title.dto';
+import { MoveDto, TitleDto } from './dtos/title.dto';
 
 @Controller('titles')
 export class AppController {
@@ -56,10 +57,20 @@ export class AppController {
 
   @Patch(':title')
   async updateOne(
-    @Body() payload: TitleUpdateDto,
     @Param('title', ParseIntPipe) title: number,
+    @Body('amount', ParseIntPipe) amount: number,
   ) {
-    const data = await this.appService.updateOne(title, payload);
+    const data = await this.appService.updateOne(title, amount);
+    return {
+      statusCode: 200,
+      message: 'ok',
+      data,
+    };
+  }
+
+  @Delete(':title')
+  async deleteOne(@Param('title', ParseIntPipe) title: number) {
+    const data = await this.appService.deleteOne(title);
     return {
       statusCode: 200,
       message: 'ok',
