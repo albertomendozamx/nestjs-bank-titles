@@ -1,4 +1,6 @@
 import {
+  NotFoundException,
+  UnprocessableEntityException,
   Body,
   Controller,
   Delete,
@@ -20,7 +22,8 @@ export class AppController {
     const data = await this.appService.getAll();
     return {
       statusCode: 200,
-      message: 'ok',
+      message: 'List of titles',
+      total: data.length,
       data,
     };
   }
@@ -38,9 +41,14 @@ export class AppController {
   @Post()
   async createNew(@Body() payload: TitleDto) {
     const data = await this.appService.createNew(payload);
+    if (!data) {
+      throw new UnprocessableEntityException(
+        `User already has ${payload.idtitulo} title`,
+      );
+    }
     return {
       statusCode: 200,
-      message: 'ok',
+      message: 'The title was associated successfully',
       data,
     };
   }
@@ -48,9 +56,12 @@ export class AppController {
   @Patch('/move')
   async moveDate(@Body() payload: MoveDto) {
     const data = await this.appService.moveDate(payload);
+    if (!data) {
+      throw new NotFoundException(`There are not titles`);
+    }
     return {
       statusCode: 200,
-      message: 'ok',
+      message: 'Titles were moved successfully',
       data,
     };
   }
@@ -61,9 +72,12 @@ export class AppController {
     @Body('amount', ParseIntPipe) amount: number,
   ) {
     const data = await this.appService.updateOne(title, amount);
+    if (!data) {
+      throw new NotFoundException(`Title not found`);
+    }
     return {
       statusCode: 200,
-      message: 'ok',
+      message: 'Title was updated successfully',
       data,
     };
   }
@@ -71,9 +85,12 @@ export class AppController {
   @Delete(':title')
   async deleteOne(@Param('title', ParseIntPipe) title: number) {
     const data = await this.appService.deleteOne(title);
+    if (!data) {
+      throw new NotFoundException(`Title not found`);
+    }
     return {
       statusCode: 200,
-      message: 'ok',
+      message: 'Title was deleted successfully',
       data,
     };
   }

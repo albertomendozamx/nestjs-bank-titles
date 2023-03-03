@@ -18,18 +18,19 @@ export class AppService {
     return userTitle || false;
   }
 
-  async createNew(title: TitleDto): Promise<Title> {
+  async createNew(title: TitleDto): Promise<Title | boolean> {
+    const hasTitle = this.titles.find(
+      (saved) => saved.idtitulo === title.idtitulo,
+    );
+    if (hasTitle) return false;
     const id = Math.max(...this.titles.map((titulo) => titulo.id)) + 1;
     const newTitle = {
       id,
       ...title,
     };
     this.titles.push(newTitle);
-    await fsPromises.writeFile(
-      'src/db/titles.json',
-      JSON.stringify(this.titles, null, 2),
-    );
-    return newTitle;
+    const saved = await this.save(this.titles);
+    return saved ? newTitle : false;
   }
 
   async updateOne(id: number, amount: number): Promise<Title | boolean> {
@@ -44,11 +45,8 @@ export class AppService {
     };
     const allTitles = await this.titles.filter((title) => title.id !== id);
     const updatedTitles = [...allTitles, updatedTitle];
-    await fsPromises.writeFile(
-      'src/db/titles.json',
-      JSON.stringify(updatedTitles, null, 2),
-    );
-    return updatedTitle;
+    const saved = await this.save(updatedTitles);
+    return saved ? updatedTitle : false;
   }
 
   async moveDate(move: MoveDto): Promise<Title[] | boolean> {
@@ -64,21 +62,27 @@ export class AppService {
       return title;
     });
     const allTitles = [...excludedTitles, ...movedTitles];
-    await fsPromises.writeFile(
-      'src/db/titles.json',
-      JSON.stringify(allTitles, null, 2),
-    );
-    return allTitles;
+    const saved = await this.save(allTitles);
+    return saved ? allTitles : false;
   }
 
   async deleteOne(id: number): Promise<Title[] | false> {
     const userTitle = await this.titles.find((title) => title.id == id);
     if (!userTitle) return false;
     const allTitles = this.titles.filter((title) => title.id !== id);
-    await fsPromises.writeFile(
-      'src/db/titles.json',
-      JSON.stringify(allTitles, null, 2),
-    );
-    return allTitles;
+    const saved = await this.save(allTitles);
+    return saved ? allTitles : false;
+  }
+
+  private async save(titles: Title[]) {
+    try {
+      await fsPromises.writeFile(
+        'src/db/titles.json',
+        JSON.stringify(titles, null, 2),
+      );
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 }
