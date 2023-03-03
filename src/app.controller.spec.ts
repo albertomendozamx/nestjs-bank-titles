@@ -1,3 +1,4 @@
+import * as dayjs from 'dayjs';
 import { Test, TestingModule } from '@nestjs/testing';
 import {
   NotFoundException,
@@ -5,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { Title } from './dtos/title.dto';
 import { Pago } from './dtos/pago.enum';
 import { IDTitle } from './dtos/title.enum';
 import { Description } from './dtos/description.enum';
@@ -41,13 +43,21 @@ describe('AppController', () => {
     });
 
     it('createNew should return a new Title', async () => {
+      const { data } = await appController.allTitles();
+      const selected: string[] = data.map((title) => title.idtitulo);
+      const availables = Object.keys(IDTitle).filter(
+        (id) => !selected.includes(id),
+      );
+      const idtitulo = IDTitle[availables[0]];
+      const titulo = Description[availables[0]];
+
       const newTitle = {
-        idtitulo: IDTitle.tesp,
-        titulo: Description.tesp,
+        idtitulo,
+        titulo,
         clasificacion: '',
         valor: 0,
-        fecha_creacion: '2023-01-01',
-        fecha_vencimiento: '2023-02-01',
+        fecha_creacion: dayjs().format('YYYY-MM-DD'),
+        fecha_vencimiento: dayjs().add(6, 'M').format('YYYY-MM-DD'),
         pagocuota: Pago.N,
       };
       const response = await appController.createNew(newTitle);
@@ -56,12 +66,12 @@ describe('AppController', () => {
 
     it('createNew should return UnprocessableEntityException if kind of title exists', async () => {
       const newTitle = {
-        idtitulo: IDTitle.usd,
-        titulo: Description.usd,
+        idtitulo: IDTitle.USD,
+        titulo: Description.USD,
         clasificacion: '',
         valor: 0,
-        fecha_creacion: '2023-01-01',
-        fecha_vencimiento: '2023-02-01',
+        fecha_creacion: dayjs().format('YYYY-MM-DD'),
+        fecha_vencimiento: dayjs().format('YYYY-MM-DD'),
         pagocuota: Pago.N,
       };
       try {
@@ -75,18 +85,18 @@ describe('AppController', () => {
     });
 
     it('moveDate should return a successful message when titles were moved', async () => {
-      const response = await appController.moveDate({
-        from: '2023-01-01',
-        to: '2022-12-01',
-      });
+      const { data } = await appController.allTitles();
+      const from = data[0].fecha_creacion;
+      const to = dayjs().add(6, 'M').format('YYYY-MM-DD');
+      const response = await appController.moveDate({ from, to });
       expect(response.message).toBe('Titles were moved successfully');
     });
 
     it('moveDate should return NotFoundException when there are not titles with a date', async () => {
       try {
         await appController.moveDate({
-          from: '2023-01-01',
-          to: '2022-12-01',
+          from: '2000-01-01',
+          to: '2001-12-01',
         });
       } catch (error) {
         expect(error).toBeInstanceOf(NotFoundException);
