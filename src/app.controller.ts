@@ -31,6 +31,9 @@ export class AppController {
   @Get(':id')
   async getOne(@Param('id', ParseIntPipe) id: number) {
     const data = await this.appService.getOne(id);
+    if (!data) {
+      throw new NotFoundException(`Title not found`);
+    }
     return {
       statusCode: 200,
       message: 'ok',
@@ -77,7 +80,7 @@ export class AppController {
     }
     return {
       statusCode: 200,
-      message: 'Title was updated successfully',
+      message: `Title ${title} was updated successfully`,
       data,
     };
   }
@@ -90,7 +93,7 @@ export class AppController {
     }
     return {
       statusCode: 200,
-      message: 'Title was deleted successfully',
+      message: `Title ${title} was deleted successfully`,
       data,
     };
   }
