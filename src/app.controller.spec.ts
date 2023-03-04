@@ -111,10 +111,10 @@ describe('AppController', () => {
 
     it('deleteOne should return NotFoundException when the title does not exist', async () => {
       try {
-        await appController.deleteOne(5);
+        await appController.deleteOne(5000);
       } catch (error) {
         expect(error).toBeInstanceOf(NotFoundException);
-        error(error.message).toBe('Title not found');
+        expect(error.message).toBe('Title not found');
       }
     });
 

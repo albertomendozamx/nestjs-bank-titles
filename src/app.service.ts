@@ -66,7 +66,7 @@ export class AppService {
     return saved ? allTitles : false;
   }
 
-  async deleteOne(id: number): Promise<Title[] | false> {
+  async deleteOne(id: number): Promise<Title[] | boolean> {
     const userTitle = await this.titles.find((title) => title.id == id);
     if (!userTitle) return false;
     const allTitles = this.titles.filter((title) => title.id !== id);
