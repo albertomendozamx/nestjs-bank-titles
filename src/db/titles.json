@@ -5,7 +5,7 @@
     "titulo": "TÍTULO DE PARTICIPACIÓN RENTA VARIABLE",
     "clasificacion": "DIV",
     "valor": 256000000,
-    "fecha_creacion": "2023-09-03",
+    "fecha_creacion": "2023-09-07",
     "fecha_vencimiento": "2023-08-26",
     "pagocuota": "N"
   },
@@ -20,42 +20,12 @@
     "pagocuota": "N"
   },
   {
-    "id": 4,
-    "idtitulo": "TPRV",
-    "titulo": "TÍTULO DE PARTICIPACIÓN RENTA VARIABLE",
-    "clasificacion": "",
-    "valor": 0,
-    "fecha_creacion": "2023-03-03",
-    "fecha_vencimiento": "2023-09-03",
-    "pagocuota": "N"
-  },
-  {
-    "id": 5,
-    "idtitulo": "THI",
-    "titulo": "TITULOS HIPOTECARIOS",
-    "clasificacion": "",
-    "valor": 0,
-    "fecha_creacion": "2023-03-03",
-    "fecha_vencimiento": "2023-09-03",
-    "pagocuota": "N"
-  },
-  {
-    "id": 6,
-    "idtitulo": "TID",
-    "titulo": "TIDIS",
-    "clasificacion": "",
-    "valor": 0,
-    "fecha_creacion": "2023-03-03",
-    "fecha_vencimiento": "2023-09-03",
-    "pagocuota": "N"
-  },
-  {
     "id": 1,
     "idtitulo": "USD",
     "titulo": "DOLAR",
     "clasificacion": "DIV",
-    "valor": 499952000,
-    "fecha_creacion": "2022-03-14",
+    "valor": 499945000,
+    "fecha_creacion": "2023-09-07",
     "fecha_vencimiento": "2023-03-15",
     "pagocuota": "N"
   }
