@@ -4,9 +4,10 @@ import {
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
+
+import { save } from './db/utils';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { Title } from './dtos/title.dto';
 import { Pago } from './dtos/pago.enum';
 import { IDTitle } from './dtos/title.enum';
 import { Description } from './dtos/description.enum';
@@ -21,6 +22,12 @@ describe('AppController', () => {
     }).compile();
 
     appController = app.get<AppController>(AppController);
+  });
+
+  afterAll(async () => {
+    const { data } = await appController.allTitles();
+    const resetData = await data.filter((title) => title.id < 4);
+    await save(resetData);
   });
 
   describe('root', () => {
@@ -64,7 +71,7 @@ describe('AppController', () => {
       expect(response.data).toHaveProperty('id');
     });
 
-    it('createNew should return UnprocessableEntityException if kind of title exists', async () => {
+    it('createNew should return UnprocessableEntityException if kind of title does not exist', async () => {
       const newTitle = {
         idtitulo: IDTitle.USD,
         titulo: Description.USD,
@@ -104,14 +111,16 @@ describe('AppController', () => {
     });
 
     it('deleteOne should return a successful message when the title was removed', async () => {
-      const title = 5;
+      const { data } = await appController.allTitles();
+      const id = Math.max(...data.map((titulo) => titulo.id));
+      const title = id;
       const response = await appController.deleteOne(title);
       expect(response.message).toBe(`Title ${title} was deleted successfully`);
     });
 
     it('deleteOne should return NotFoundException when the title does not exist', async () => {
       try {
-        await appController.deleteOne(5000);
+        await appController.deleteOne(-1);
       } catch (error) {
         expect(error).toBeInstanceOf(NotFoundException);
         expect(error.message).toBe('Title not found');
@@ -121,6 +130,14 @@ describe('AppController', () => {
     it('updateOne should return a successful message when the title was updated', async () => {
       const title = 1;
       const amount = 1000;
+      const response = await appController.updateOne(title, amount);
+      expect(response.message).toBe(`Title ${title} was updated successfully`);
+    });
+
+    it('updateOne should return a successful message when the title was paid', async () => {
+      const { data } = await appController.allTitles();
+      const title = data[0].id;
+      const amount = data[0].valor;
       const response = await appController.updateOne(title, amount);
       expect(response.message).toBe(`Title ${title} was updated successfully`);
     });

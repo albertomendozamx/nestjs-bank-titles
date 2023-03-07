@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { promises as fsPromises } from 'fs';
 
+import { save } from './db/utils';
 import { MoveDto, TitleDto, Title } from './dtos/title.dto';
 import * as db from './db/titles.json';
 import { Pago } from './dtos/pago.enum';
@@ -29,8 +29,8 @@ export class AppService {
       ...title,
     };
     this.titles.push(newTitle);
-    const saved = await this.save(this.titles);
-    return saved ? newTitle : false;
+    await save(this.titles);
+    return newTitle;
   }
 
   async updateOne(id: number, amount: number): Promise<Title | boolean> {
@@ -45,8 +45,8 @@ export class AppService {
     };
     const allTitles = await this.titles.filter((title) => title.id !== id);
     const updatedTitles = [...allTitles, updatedTitle];
-    const saved = await this.save(updatedTitles);
-    return saved ? updatedTitle : false;
+    await save(updatedTitles);
+    return updatedTitle;
   }
 
   async moveDate(move: MoveDto): Promise<Title[] | boolean> {
@@ -62,27 +62,15 @@ export class AppService {
       return title;
     });
     const allTitles = [...excludedTitles, ...movedTitles];
-    const saved = await this.save(allTitles);
-    return saved ? allTitles : false;
+    await save(allTitles);
+    return allTitles;
   }
 
   async deleteOne(id: number): Promise<Title[] | boolean> {
     const userTitle = await this.titles.find((title) => title.id == id);
     if (!userTitle) return false;
     const allTitles = this.titles.filter((title) => title.id !== id);
-    const saved = await this.save(allTitles);
-    return saved ? allTitles : false;
-  }
-
-  private async save(titles: Title[]) {
-    try {
-      await fsPromises.writeFile(
-        'src/db/titles.json',
-        JSON.stringify(titles, null, 2),
-      );
-      return true;
-    } catch (error) {
-      return false;
-    }
+    await save(allTitles);
+    return allTitles;
   }
 }
