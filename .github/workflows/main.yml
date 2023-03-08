@@ -23,7 +23,8 @@ jobs:
       - name: Update Coverage Badge
         uses: we-cli/coverage-badge-action@main
 
-  deploy:
+  build:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Latest Repo
