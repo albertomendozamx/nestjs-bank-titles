@@ -26,7 +26,7 @@
 ## Project badges
 
 [![build](https://img.shields.io/github/actions/workflow/status/albertomendozamx/nestjs-bank-titles/main.yml)](https://img.shields.io/github/actions/workflow/status/albertomendozamx/nestjs-bank-titles/main.yml)
-[![cov](https://albertomendozamx.github.io/nestjs-bank-titles/badges/coverage.svg)](https://github.com/albertomendozamx/nestjs-bank-titles/actions) 
+[![coverage](https://albertomendozamx.github.io/nestjs-bank-titles/badges/coverage.svg)](https://albertomendozamx.github.io/nestjs-bank-titles/badges/coverage.svg) 
 
 ## Description
 
