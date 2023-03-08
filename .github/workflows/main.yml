@@ -53,7 +53,7 @@ jobs:
     steps:
       - name: Checkout Latest Repo
         uses: actions/checkout@master
-        
+
       - name: Get Timestamp
         uses: gerred/actions/current-time@master
         id: current-time
@@ -78,5 +78,5 @@ jobs:
           application_name: docker-app
           environment_name: Dockerapp-env
           version_label: "docker-app-${{ steps.format-time.outputs.replaced }}"
-          region: us-est-2
+          region: us-east-2
           deployment_package: deploy.zip
