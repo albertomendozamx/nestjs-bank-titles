@@ -26,4 +26,4 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: titles/demo:latest
+          tags: mendoza/titles:demo
