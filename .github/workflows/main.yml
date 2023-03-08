@@ -20,6 +20,9 @@ jobs:
       - run: yarn install
       - run: yarn test:cov
 
+      - name: Update Coverage Badge
+        uses: we-cli/coverage-badge-action@main
+
   deploy:
     runs-on: ubuntu-latest
     steps:
